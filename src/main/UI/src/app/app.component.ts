@@ -28,11 +28,19 @@ export class AppComponent implements OnInit{
   currentCheckInVal!:string;
   currentCheckOutVal!:string;
 
+
+  // B1 Requirement
+
+  welcomeMessages: string[] = [];
+
     ngOnInit(){
       this.roomsearch= new FormGroup({
         checkin: new FormControl(' '),
         checkout: new FormControl(' ')
       });
+
+      // B1 Requirement
+      this.getWelcomeMessages();
 
  //     this.rooms=ROOMS;
 
@@ -44,6 +52,20 @@ export class AppComponent implements OnInit{
       this.currentCheckInVal = x.checkin;
       this.currentCheckOutVal = x.checkout;
     });
+  }
+
+
+  // B1 Requirement
+  getWelcomeMessages(){
+
+      this.httpClient.get<string[]>(this.baseURL + '/api/welcome').subscribe(
+        data => {
+          this.welcomeMessages = data;
+        },
+        error => {
+          console.error('Error fetching welcome messages:', error);
+        }
+      );
   }
 
     onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){

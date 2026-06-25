@@ -30,8 +30,9 @@ export class AppComponent implements OnInit{
 
 
   // B1 Requirement
-
+  // Array variable that mirrors the JSON list returned by JAVA API endpoint
   welcomeMessages: string[] = [];
+  presentationMessages: string[] = [];
 
     ngOnInit(){
       this.roomsearch= new FormGroup({
@@ -39,11 +40,11 @@ export class AppComponent implements OnInit{
         checkout: new FormControl(' ')
       });
 
-      // B1 Requirement
+      // B1 Requirement - Trigger backend API call when web page mounts
       this.getWelcomeMessages();
 
- //     this.rooms=ROOMS;
-
+      // B3 Requirement
+      this.getPresentationMessages();
 
     const roomsearchValueChanges$ = this.roomsearch.valueChanges;
 
@@ -53,16 +54,29 @@ export class AppComponent implements OnInit{
       this.currentCheckOutVal = x.checkout;
     });
   }
+  getPresentationMessages(){
+    this.httpClient.get<string[]>(this.baseURL + '/api/presentation').subscribe(
+      data => {
+        this.presentationMessages = data;
+      },
+      error => {
+        console.error('Error fetching presentation times:', error);
+      }
+    )
+  };
 
 
   // B1 Requirement
+  // Server request for welcome text
   getWelcomeMessages(){
 
       this.httpClient.get<string[]>(this.baseURL + '/api/welcome').subscribe(
         data => {
+          // If the call succeeds, take the text array from Java, and save into our variable
           this.welcomeMessages = data;
         },
         error => {
+          // If the network call fails, log network pipeline failure to browser dev console
           console.error('Error fetching welcome messages:', error);
         }
       );

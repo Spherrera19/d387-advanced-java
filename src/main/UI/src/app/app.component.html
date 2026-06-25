@@ -29,6 +29,14 @@
         </h2>
       </div>
 
+      <div *ngIf="presentationMessages && presentationMessages.length > 0" class="presentation-container" style="text-align: center; margin: 20px 0; padding: 15px; background-color: #e3f2fd; border: 1px solid #90caf9; border-radius: 4px;">
+        <h3 style="color: #0d47a1; margin-bottom: 10px;">Join our Live Online Presentation!</h3>
+
+        <h4 *ngFor="let msg of presentationMessages" style="color: #1565c0; margin: 5px 0;">
+          {{ msg }}
+        </h4>
+      </div>
+
       <div class="row">
         <div class=""col-12>
           <div class="gallery">
@@ -79,7 +87,11 @@
                 </td>
                 <td>
                   <strong>Room #: {{room.roomNumber}}</strong><br/>
-                  <strong>Price: ${{room.price}}</strong>
+
+                  <strong>Price: ${{room.price}} USD</strong><br/>
+                  <strong>Price: C${{room.price}} CAD</strong><br/>
+                  <strong>Price: €{{room.price}} EUR</strong>
+
                 </td>
                 <td>
                   <button type="submit" class="btn btn-primary" (click)="reserveRoom(room.id)">Reserve</button>
